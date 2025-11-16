@@ -1,4 +1,4 @@
-![GNL](GNL.png)
+
 
 
 # Get_Next_Line
