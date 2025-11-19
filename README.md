@@ -2,7 +2,7 @@
 ![GNL](GNL1.png)
 
 # Get_Next_Line
-42 get_next_line Project 
+
 # Valgrind Memory Debugging Guide
 
 ## Check if Valgrind is Installed
@@ -29,7 +29,6 @@ If yes, proceed to the next step.
 gcc -g -Wall -Wextra -Werror your_program.c -o program
 ```
 
----
 
 ## B) Run Your Program with Valgrind
 
@@ -51,7 +50,6 @@ valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./program
 - **`--show-leak-kinds=all`** → shows all leak types (definite, indirect, possible)
 - **`--track-origins=yes`** → tells you where uninitialized values come from
 
----
 
 ## C) Understand Valgrind Output
 
@@ -74,8 +72,6 @@ This means you wrote to memory you shouldn't.
 ```
 
 This means you **allocated memory and never freed it**.
-
----
 
 ## D) Check Summary at the End
 
