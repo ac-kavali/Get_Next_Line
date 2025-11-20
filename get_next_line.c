@@ -67,24 +67,50 @@ static char	*get_remainder(char *stash)
 	return (new_stash);
 }
 
-char *get_next_line(int fd)
+static char	*get_stash(char *stash, int fd)
 {
-	char *line;
-	char buffer[BUFFER_SIZE + 1];
-	static char *stash;
-	int bytes;
+	int		bytes;
+	char	*buffer;
 
-	if(fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
-		return NULL;
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
 	bytes = 1;
-	
-	if(!stash || !*stash)
+	while (bytes > 0 && !ft_strchr_gnl(stash, '\n'))
+	{
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes == 0)
+			break ;
+		if (bytes < 0)
+		{
+			free(stash);
+			stash = NULL;
+			return (NULL);
+		}
+		buffer[bytes] = '\0';
+		stash = ft_strjoin_gnl(stash, buffer);
+		if (!stash)
+			return (NULL);
+	}
+	free(buffer);
+	return (stash);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*stash;
+
+	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
+		return (NULL);
+	stash = get_stash(stash, fd);
+	if (!stash || !*stash)
 	{
 		free(stash);
 		stash = NULL;
-		return NULL;
+		return (NULL);
 	}
 	line = extract_line(stash);
 	stash = get_remainder(stash);
-	return line;
+	return (line);
 }

@@ -17,16 +17,24 @@
 #  define BUFFER_SIZE 6
 # endif
 
-# include <stdlib.h>
-# include <unistd.h>
+# if BUFFER_SIZE < 0
+#  undef BUFFER_SIZE
+#  define BUFFER_SIZE 0
+# endif
+
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
+# endif
+
+# include <fcntl.h>
 # include <stddef.h>
 # include <stdlib.h>
-# include <fcntl.h>
+# include <unistd.h>
 
 char	*get_next_line(int fd);
 char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*ft_strchr_gnl(const char *s, int c);
 size_t	ft_strlen_gnl(const char *s);
-char *get_next_line_bonus(int fd);
+char	*get_next_line_bonus(int fd);
 
 #endif
