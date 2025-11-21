@@ -90,7 +90,10 @@ Implement these first:
 
 **A line ends with:**
  - A `\n` is found.
- - EOF is reached with remaining data.
+ - or EOF is reached with remaining data.
+ - I represent the EOF with : "read define the end of file when no data remain to read it". 
+ - this is simple but what realy happen :
+   The file offset advances with each `read()` call. The OS signals end-of-file (EOF) when the current offset reaches the file size—that is, when `file size - offset = 0`.
 
 ---
 
