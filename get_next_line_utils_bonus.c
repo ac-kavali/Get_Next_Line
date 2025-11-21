@@ -6,7 +6,7 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:52:36 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/17 15:58:41 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 10:05:26 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,7 @@ char	*ft_strjoin_gnl(char *s1, char *s2)
 	}
 	joined = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	if (!joined)
-	{
-		free(s1);
-		return (NULL);
-	}
+		return (free(s1), NULL);
 	ft_merge(joined, s1, s2);
 	free(s1);
 	return (joined);

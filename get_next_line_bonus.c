@@ -6,9 +6,10 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:52:52 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/19 23:51:25 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 10:54:07 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line_bonus.h"
 
 static char	*extract_line(char *stash)
@@ -67,12 +68,10 @@ static char	*get_remainder(char *stash)
 	return (new_stash);
 }
 
-static char	*get_stash(char *stash, int fd)
+static char	*get_stash(char *stash, char *buffer, int fd)
 {
 	int		bytes;
-	char	*buffer;
 
-	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	bytes = 1;
@@ -82,15 +81,11 @@ static char	*get_stash(char *stash, int fd)
 		if (bytes == 0)
 			break ;
 		if (bytes < 0)
-		{
-			free(stash);
-			stash = NULL;
-			return (NULL);
-		}
+			return (free(buffer), free(stash), NULL);
 		buffer[bytes] = '\0';
 		stash = ft_strjoin_gnl(stash, buffer);
 		if (!stash)
-			return (NULL);
+			return (free(buffer), NULL);
 	}
 	free(buffer);
 	return (stash);
@@ -100,10 +95,14 @@ char	*get_next_line_bonus(int fd)
 {
 	char		*line;
 	static char	*stash[OPEN_MAX];
+	char	*buffer;
 
-	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= OPEN_MAX)
 		return (NULL);
-	stash[fd] = get_stash(stash[fd], fd);
+	buffer = malloc(BUFFER_SIZE + 1);
+	if(!buffer)
+		return (NULL);
+	stash[fd] = get_stash(stash[fd], buffer, fd);
 	if (!stash[fd] || !*stash[fd])
 	{
 		free(stash[fd]);
@@ -111,6 +110,10 @@ char	*get_next_line_bonus(int fd)
 		return (NULL);
 	}
 	line = extract_line(stash[fd]);
+	if(!line || !*line)
+		return (free(stash[fd]), stash[fd] = NULL, free(line), line);
 	stash[fd] = get_remainder(stash[fd]);
+	if(!stash[fd] || !*stash[fd])
+		return (free(stash[fd]), stash[fd]=NULL, line);
 	return (line);
 }

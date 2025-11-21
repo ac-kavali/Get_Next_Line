@@ -6,15 +6,16 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:52:52 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/17 23:56:49 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 11:50:48 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static char	*extract_line(char *stash)
 {
-	int		i;
-	int		j;
+	size_t		i;
+	size_t		j;
 	char	*line;
 
 	i = 0;
@@ -41,8 +42,8 @@ static char	*extract_line(char *stash)
 
 static char	*get_remainder(char *stash)
 {
-	int		i;
-	int		j;
+	size_t		i;
+	size_t		j;
 	char	*new_stash;
 
 	i = 0;
@@ -67,12 +68,10 @@ static char	*get_remainder(char *stash)
 	return (new_stash);
 }
 
-static char	*get_stash(char *stash, int fd)
+static char	*get_stash(char *stash, char *buffer, int fd)
 {
-	int		bytes;
-	char	*buffer;
+	ssize_t	bytes;
 
-	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	bytes = 1;
@@ -82,28 +81,29 @@ static char	*get_stash(char *stash, int fd)
 		if (bytes == 0)
 			break ;
 		if (bytes < 0)
-		{
-			free(stash);
-			stash = NULL;
-			return (NULL);
-		}
+			return (free(buffer), free(stash), NULL);
 		buffer[bytes] = '\0';
 		stash = ft_strjoin_gnl(stash, buffer);
 		if (!stash)
-			return (NULL);
+			return (free(buffer), NULL);
 	}
 	free(buffer);
 	return (stash);
 }
+#include <limits.h>
 
 char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	*stash;
-
-	if (fd < 0 || read(fd, 0, 0) < 0 || BUFFER_SIZE <= 0 || fd > OPEN_MAX)
+	char	*buffer;
+	
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = get_stash(stash, fd);
+	buffer = malloc(INT_MIN);
+	if(!buffer)
+		return (NULL);
+	stash = get_stash(stash, buffer, fd);
 	if (!stash || !*stash)
 	{
 		free(stash);
@@ -111,6 +111,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = extract_line(stash);
+	if(!line || !*line)
+		return (free(stash), stash = NULL, free(line), NULL);
 	stash = get_remainder(stash);
+	if(!stash || !*stash)
+		return (free(stash), stash = NULL, line);
 	return (line);
 }

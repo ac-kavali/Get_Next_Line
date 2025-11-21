@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/17 11:52:36 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/17 15:58:41 by achahi           ###   ########.fr       */
+/*   Created: 2025/11/20 21:26:51 by achahi            #+#    #+#             */
+/*   Updated: 2025/11/21 11:25:47 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,11 @@
 # define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 6
+#  define BUFFER_SIZE 42
+# endif
+
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
 # endif
 
 # if BUFFER_SIZE < 0
@@ -22,13 +26,6 @@
 #  define BUFFER_SIZE 0
 # endif
 
-# ifndef OPEN_MAX
-#  define OPEN_MAX 1024
-# endif
-
-# include <fcntl.h>
-# include <limits.h>
-# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
 
