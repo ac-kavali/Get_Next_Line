@@ -1,5 +1,5 @@
 
-![GNL](GNL1.png)
+![GNL](GNL.png)
 
 # Get_Next_Line
 
