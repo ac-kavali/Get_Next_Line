@@ -232,7 +232,7 @@ error: size of array is negative
 
 Use manually allocated array in heap:
 ```c 
-if (BUFFER_SIZE <= 0 || fd < 0 || read(fd, 0, 0) < 0)
+if (BUFFER_SIZE <= 0 || fd < 0)
     return NULL;
 char *buffer = malloc(BUFFER_SIZE + 1);
 
