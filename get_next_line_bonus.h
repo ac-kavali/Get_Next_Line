@@ -6,7 +6,7 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 21:26:51 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/21 11:25:47 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 23:10:32 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@
 char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*ft_strchr_gnl(const char *s, int c);
 size_t	ft_strlen_gnl(const char *s);
-char	*get_next_line_bonus(int fd);
+char	*get_next_line(int fd);
 
 #endif

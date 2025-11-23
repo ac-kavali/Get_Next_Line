@@ -6,7 +6,7 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 11:52:36 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/21 10:38:57 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 16:23:35 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 
 # ifndef OPEN_MAX
 #  define OPEN_MAX 1024
+# endif
+
+# if BUFFER_SIZE < 0
+#  undef BUFFER_SIZE 
+#  define BUFFER_SIZE 0
 # endif
 
 # include <stdlib.h>

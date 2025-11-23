@@ -6,7 +6,7 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:52:52 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/21 10:54:07 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 21:40:18 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static char	*get_remainder(char *stash)
 
 static char	*get_stash(char *stash, char *buffer, int fd)
 {
-	int		bytes;
+	int	bytes;
 
 	if (!buffer)
 		return (NULL);
@@ -91,16 +91,16 @@ static char	*get_stash(char *stash, char *buffer, int fd)
 	return (stash);
 }
 
-char	*get_next_line_bonus(int fd)
+char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	*stash[OPEN_MAX];
-	char	*buffer;
+	char		*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= OPEN_MAX)
 		return (NULL);
-	buffer = malloc(BUFFER_SIZE + 1);
-	if(!buffer)
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	if (!buffer)
 		return (NULL);
 	stash[fd] = get_stash(stash[fd], buffer, fd);
 	if (!stash[fd] || !*stash[fd])
@@ -110,10 +110,10 @@ char	*get_next_line_bonus(int fd)
 		return (NULL);
 	}
 	line = extract_line(stash[fd]);
-	if(!line || !*line)
+	if (!line || !*line)
 		return (free(stash[fd]), stash[fd] = NULL, free(line), line);
 	stash[fd] = get_remainder(stash[fd]);
-	if(!stash[fd] || !*stash[fd])
-		return (free(stash[fd]), stash[fd]=NULL, line);
+	if (!stash[fd] || !*stash[fd])
+		return (free(stash[fd]), stash[fd] = NULL, line);
 	return (line);
 }

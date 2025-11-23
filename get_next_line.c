@@ -6,7 +6,7 @@
 /*   By: achahi <achahi@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/17 20:52:52 by achahi            #+#    #+#             */
-/*   Updated: 2025/11/21 11:50:48 by achahi           ###   ########.fr       */
+/*   Updated: 2025/11/21 16:30:46 by achahi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static char	*extract_line(char *stash)
 {
-	size_t		i;
-	size_t		j;
+	size_t	i;
+	size_t	j;
 	char	*line;
 
 	i = 0;
@@ -42,8 +42,8 @@ static char	*extract_line(char *stash)
 
 static char	*get_remainder(char *stash)
 {
-	size_t		i;
-	size_t		j;
+	size_t	i;
+	size_t	j;
 	char	*new_stash;
 
 	i = 0;
@@ -90,18 +90,17 @@ static char	*get_stash(char *stash, char *buffer, int fd)
 	free(buffer);
 	return (stash);
 }
-#include <limits.h>
 
 char	*get_next_line(int fd)
 {
 	char		*line;
 	static char	*stash;
-	char	*buffer;
-	
+	char		*buffer;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = malloc(INT_MIN);
-	if(!buffer)
+	buffer = malloc((size_t)BUFFER_SIZE + 1);
+	if (!buffer)
 		return (NULL);
 	stash = get_stash(stash, buffer, fd);
 	if (!stash || !*stash)
@@ -111,10 +110,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	line = extract_line(stash);
-	if(!line || !*line)
+	if (!line || !*line)
 		return (free(stash), stash = NULL, free(line), NULL);
 	stash = get_remainder(stash);
-	if(!stash || !*stash)
+	if (!stash || !*stash)
 		return (free(stash), stash = NULL, line);
 	return (line);
 }
